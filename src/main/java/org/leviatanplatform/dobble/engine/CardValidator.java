@@ -5,26 +5,26 @@ import java.util.List;
 
 public class CardValidator {
 
-    public static void validate(List<Card> listCard) throws ValidationException {
+    public static void validate(List<Card> listCard, int numItemsPerCard) throws ValidationException {
 
         List<Card> listCardCopy = new ArrayList<>(listCard);
 
         for (Card card : listCard) {
-            validate(card, listCardCopy);
+            validate(card, listCardCopy, numItemsPerCard);
         }
     }
 
-    private static void validate(Card card, List<Card> listCard) throws ValidationException {
+    private static void validate(Card card, List<Card> listCard, int numItemsPerCard) throws ValidationException {
 
         for (Card cardIter : listCard) {
 
             if (cardIter != card) {
-                matchesOnlyOneItem(cardIter, cardIter);
+                matchesOnlyOneItem(cardIter, cardIter, numItemsPerCard);
             }
         }
     }
 
-    private static void matchesOnlyOneItem(Card card1, Card card2) throws ValidationException {
+    private static void matchesOnlyOneItem(Card card1, Card card2, int numItemsPerCard) throws ValidationException {
 
         if (card1.hasDifferentItems()) {
             throw new ValidationException("Repeated items in card: " + card1);
@@ -34,8 +34,12 @@ public class CardValidator {
             throw new ValidationException("Repeated items in card: " + card2);
         }
 
-        if (card1.getListItems().size() != card2.getListItems().size()) {
-            throw new ValidationException("Repeated items in card: " + card2);
+        if (card1.getListItems().size() !=numItemsPerCard) {
+            throw new ValidationException("Error in number of items of card: " + card1);
+        }
+
+        if (card2.getListItems().size() != numItemsPerCard) {
+            throw new ValidationException("Error in number of items of card: " + card2);
         }
 
         int numMatches = 0;

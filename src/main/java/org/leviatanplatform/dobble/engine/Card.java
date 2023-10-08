@@ -1,16 +1,13 @@
 package org.leviatanplatform.dobble.engine;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class Card {
 
-    private final List<Integer> listItems;
-
-    public Card(List<Integer> listItems) {
-        this.listItems = listItems;
-    }
+    private final List<Integer> listItems = new ArrayList<>();
 
     public List<Integer> getListItems() {
         return listItems;
