@@ -19,18 +19,18 @@ public class CardValidator {
         for (Card cardIter : listCard) {
 
             if (cardIter != card) {
-                matchesOnlyOneItem(cardIter, cardIter, numItemsPerCard);
+                matchesOnlyOneItem(cardIter, card, numItemsPerCard);
             }
         }
     }
 
     private static void matchesOnlyOneItem(Card card1, Card card2, int numItemsPerCard) throws ValidationException {
 
-        if (card1.hasDifferentItems()) {
+        if (!card1.hasDifferentItems()) {
             throw new ValidationException("Repeated items in card: " + card1);
         }
 
-        if (card2.hasDifferentItems()) {
+        if (!card2.hasDifferentItems()) {
             throw new ValidationException("Repeated items in card: " + card2);
         }
 
