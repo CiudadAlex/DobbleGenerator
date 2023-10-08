@@ -13,8 +13,9 @@ public class Main {
         int numItemsPerCard = 6;
         DobbleGenerator dobbleGenerator = new DobbleGenerator(numItemsPerCard);
 
-
-        List<Card> listCard = dobbleGenerator.generate();
+        // FIXME remove numberOfCards argument
+        int numberOfCards = 20;
+        List<Card> listCard = dobbleGenerator.generate(numberOfCards);
 
         for (Card card : listCard) {
             System.out.println(card);
