@@ -1,4 +1,4 @@
-package org.leviatanplatform.dobble.engine;
+package org.leviatanplatform.dobble.engine.exceptions;
 
 public class ValidationException extends Exception {
 

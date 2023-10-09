@@ -1,5 +1,7 @@
 package org.leviatanplatform.dobble.engine;
 
+import org.leviatanplatform.dobble.engine.exceptions.ValidationException;
+
 import java.util.ArrayList;
 import java.util.List;
 
