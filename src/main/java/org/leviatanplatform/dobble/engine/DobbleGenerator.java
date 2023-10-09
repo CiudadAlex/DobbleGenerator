@@ -1,5 +1,8 @@
 package org.leviatanplatform.dobble.engine;
 
+import org.leviatanplatform.dobble.engine.exceptions.IndexFinishedException;
+import org.leviatanplatform.dobble.engine.exceptions.ValidationException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,53 +15,62 @@ public class DobbleGenerator {
         this.numItemsPerCard = numItemsPerCard;
     }
 
-    public List<Card> generate(int numberOfCards) throws ValidationException {
+    public List<Card> generate() throws ValidationException {
 
         List<Card> listCard = new ArrayList<>();
-        List<Card> listCardUnfinished = new ArrayList<>();
 
-        for (int i = 0; i < numberOfCards; i++) {
+        while (true) {
+            Card newCard = generateNewCard(listCard);
 
-            Card card = new Card();
-            listCardUnfinished.add(card);
-            listCard.add(card);
+            if (newCard == null) {
+                break;
+            }
+
+            listCard.add(newCard);
         }
 
-        Card card = listCardUnfinished.remove(0);
-        List<Integer> newItems = fillWithNewItemsAndReturnThem(card);
-        addOneItemToEach(listCardUnfinished, newItems);
-
-        card = listCardUnfinished.remove(0);
-        newItems = fillWithNewItemsAndReturnThem(card);
-        addOneItemToEach(listCardUnfinished, newItems);
-
-        card = listCardUnfinished.remove(0);
-        newItems = fillWithNewItemsAndReturnThem(card);
-        addOneItemToEach(listCardUnfinished, newItems);
-
-        card = listCardUnfinished.remove(0);
-        newItems = fillWithNewItemsAndReturnThem(card);
-        addOneItemToEach(listCardUnfinished, newItems);
-
-        card = listCardUnfinished.remove(0);
-        newItems = fillWithNewItemsAndReturnThem(card);
-        addOneItemToEach(listCardUnfinished, newItems);
-
-        card = listCardUnfinished.remove(0);
-        newItems = fillWithNewItemsAndReturnThem(card);
-        addOneItemToEach(listCardUnfinished, newItems);
-
-        // FIXME validate
-        // CardValidator.validate(listCard, numItemsPerCard);
+        CardValidator.validate(listCard, numItemsPerCard);
         return listCard;
     }
 
-    private void addOneItemToEach(List<Card> listCard, List<Integer> listItems) {
+    private Card generateNewCard(List<Card> listCard) {
 
-        CyclicIterator<Integer> iterItems = new CyclicIterator<>(listItems);
+        Card cardUnderConstruction = generateNewCardOnlySelectItems(listCard);
 
-        for (Card card : listCard) {
-            card.getListItems().add(iterItems.nextItem());
+        if (cardUnderConstruction == null) {
+            return null;
+        }
+
+        fillWithNewItemsAndReturnThem(cardUnderConstruction);
+        return cardUnderConstruction;
+    }
+
+    private Card generateNewCardOnlySelectItems(List<Card> listCard) {
+
+        ListCardsIndex listCardsIndex = new  ListCardsIndex(listCard, numItemsPerCard);
+
+        while (true) {
+
+            try {
+
+                List<Integer> listItems = listCardsIndex.getNextCombinationOfItems();
+
+                Card newCard = new Card();
+                newCard.getListItems().addAll(listItems);
+
+                List<Card> listCardExtended = new ArrayList<>(listCard);
+                listCardExtended.add(newCard);
+                CardValidator.validateCardUnderConstruction(newCard, listCardExtended);
+
+                return newCard;
+
+            } catch (ValidationException e) {
+                // Try next combination
+
+            } catch (IndexFinishedException e) {
+                // No more cards found
+                return null;
+            }
         }
     }
 

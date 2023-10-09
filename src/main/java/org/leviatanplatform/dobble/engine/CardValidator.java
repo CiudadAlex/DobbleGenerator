@@ -44,6 +44,26 @@ public class CardValidator {
             throw new ValidationException("Error in number of items of card: " + card2);
         }
 
+        int numMatches = numMatches(card1, card2);
+
+        if (numMatches != 1) {
+            throw new ValidationException("Error in match: " + card1 + " & " + card2);
+        }
+    }
+
+    public static void validateCardUnderConstruction(Card cardUnderConstruction, List<Card> listCard) throws ValidationException {
+
+        for (Card cardIter : listCard) {
+            int numMatches = numMatches(cardUnderConstruction, cardIter);
+
+            if (numMatches != 1) {
+                throw new ValidationException("Error in match: " + cardUnderConstruction + " & " + cardIter);
+            }
+        }
+    }
+
+    private static int numMatches(Card card1, Card card2) {
+
         int numMatches = 0;
 
         for (Integer item1 : card1.getListItems()) {
@@ -53,8 +73,6 @@ public class CardValidator {
             }
         }
 
-        if (numMatches != 1) {
-            throw new ValidationException("Error in match: " + card1 + " != " + card2);
-        }
+        return numMatches;
     }
 }
