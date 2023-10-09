@@ -60,10 +60,7 @@ public class DobbleGenerator {
 
                 Card newCard = new Card();
                 newCard.getListItems().addAll(listItems);
-
-                List<Card> listCardExtended = new ArrayList<>(listCard);
-                listCardExtended.add(newCard);
-                CardValidator.validateCardUnderConstruction(newCard, listCardExtended);
+                CardValidator.validateCardUnderConstruction(newCard, listCard);
 
                 return newCard;
 
