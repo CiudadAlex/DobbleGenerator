@@ -18,6 +18,9 @@ public class DobbleGenerator {
     public List<Card> generate() throws ValidationException {
 
         List<Card> listCard = new ArrayList<>();
+        Card card0 = new Card();
+        listCard.add(card0);
+        fillWithNewItemsAndReturnThem(card0);
 
         while (true) {
             Card newCard = generateNewCard(listCard);
