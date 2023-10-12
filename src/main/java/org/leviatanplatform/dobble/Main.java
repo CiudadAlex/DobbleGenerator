@@ -11,7 +11,7 @@ public class Main {
 
     public static void main(String[] args) throws ValidationException {
 
-        int primeNumber = 2;
+        int primeNumber = 3;
         DobbleGenerator dobbleGenerator = new DobbleGenerator(primeNumber);
 
         List<Card> listCard = dobbleGenerator.generate();
