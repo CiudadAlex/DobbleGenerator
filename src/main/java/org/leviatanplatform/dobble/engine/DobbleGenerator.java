@@ -64,6 +64,11 @@ public class DobbleGenerator {
         }
 
         CardValidator.validate(listCard, numItemsPerCard);
+
+        if (numCards != listCard.size()) {
+            throw new ValidationException("Not generated all possible cards");
+        }
+
         return listCard;
     }
 
