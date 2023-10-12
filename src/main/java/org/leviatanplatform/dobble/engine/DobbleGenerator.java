@@ -32,6 +32,7 @@ public class DobbleGenerator {
      * 2 4 5
      *
      * Example for p = 3:
+     *
      *  0  1  2  3
      *  0  4  5  6
      *  0  7  8  9
