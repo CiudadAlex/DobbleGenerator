@@ -11,6 +11,7 @@ public class DobbleGenerator {
     private final int numItemsPerCard;
     private final int numCards;
     private final int numTotalItems;
+    private final int primeNumber;
     private int nextItem = 1;
 
     /**
@@ -58,9 +59,41 @@ public class DobbleGenerator {
         this.numItemsPerCard = primeNumber + 1;
         this.numCards = primeNumber * primeNumber + primeNumber + 1;
         this.numTotalItems = primeNumber * primeNumber + primeNumber + 1;
+        this.primeNumber = primeNumber;
     }
 
     public List<Card> generate() throws ValidationException {
+
+        List<Card> listCard = new ArrayList<>();
+
+        Card card0 = new Card();
+        for (int i = 0; i < numItemsPerCard; i++) {
+            card0.getListItems().add(i);
+        }
+
+        listCard.add(card0);
+        List<Integer> listRestOfItems = new ArrayList<>();
+        for (int i = numItemsPerCard; i < numTotalItems; i++) {
+            listRestOfItems.add(i);
+        }
+
+        for (int i = 0; i < numItemsPerCard; i++) {
+
+            ListIterator<Integer> listIterator = new ListIterator<>(listRestOfItems, i + 1);
+            Card card = new Card();
+            card.getListItems().add(i);
+            listCard.add(card);
+
+            for (int k = 0; k < primeNumber; k++) {
+                card.getListItems().add(listIterator.next());
+            }
+        }
+
+        //fullValidation(listCard);
+        return listCard;
+    }
+
+    public List<Card> generateOld() throws ValidationException {
 
         List<Card> listCard = new ArrayList<>();
 
@@ -79,13 +112,17 @@ public class DobbleGenerator {
             card = generateNewCard(listCard);
         }
 
+        fullValidation(listCard);
+        return listCard;
+    }
+
+    private void fullValidation(List<Card> listCard) throws ValidationException {
+
         CardValidator.validate(listCard, numItemsPerCard);
 
         if (numCards != listCard.size()) {
             throw new ValidationException("Not generated all possible cards");
         }
-
-        return listCard;
     }
 
     private Card generateNewCard(List<Card> listCard) {
