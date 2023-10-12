@@ -79,13 +79,18 @@ public class DobbleGenerator {
 
         for (int i = 0; i < numItemsPerCard; i++) {
 
-            ListIterator<Integer> listIterator = new ListIterator<>(listRestOfItems, i + 1);
-            Card card = new Card();
-            card.getListItems().add(i);
-            listCard.add(card);
+            int jump = i == 0 ? 1 : primeNumber + i - 1;
+            ListIterator<Integer> listIterator = new ListIterator<>(listRestOfItems, jump);
 
             for (int k = 0; k < primeNumber; k++) {
-                card.getListItems().add(listIterator.next());
+
+                Card card = new Card();
+                card.getListItems().add(i);
+                listCard.add(card);
+
+                for (int m = 0; m < primeNumber; m++) {
+                    card.getListItems().add(listIterator.next());
+                }
             }
         }
 
