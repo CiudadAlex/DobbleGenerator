@@ -10,6 +10,7 @@ public class DobbleGenerator {
 
     private final int numItemsPerCard;
     private final int numCards;
+    private final int numTotalItems;
     private int nextItem = 1;
 
     /**
@@ -40,6 +41,7 @@ public class DobbleGenerator {
 
         this.numItemsPerCard = primeNumber + 1;
         this.numCards = primeNumber * primeNumber + primeNumber + 1;
+        this.numTotalItems = primeNumber * primeNumber + primeNumber + 1;
     }
 
     public List<Card> generate() throws ValidationException {
@@ -54,29 +56,26 @@ public class DobbleGenerator {
             listCard.add(card);
         }
 
-        Card card = generateNewCardOnlySelectItems(listCard);
+        Card card = generateNewCard(listCard);
 
         while (card != null) {
             listCard.add(card);
-            card = generateNewCardOnlySelectItems(listCard);
+            card = generateNewCard(listCard);
         }
 
         //CardValidator.validate(listCard, numItemsPerCard);
         return listCard;
     }
 
-    private Card generateNewCardOnlySelectItems(List<Card> listCard) {
+    private Card generateNewCard(List<Card> listCard) {
 
-        ListCardsIndex listCardsIndex = new ListCardsIndex(listCard, numItemsPerCard);
+        CardSequenceGenerator cardSequenceGenerator = new CardSequenceGenerator(numItemsPerCard, numTotalItems);
 
         while (true) {
 
             try {
 
-                List<Integer> listItems = listCardsIndex.getNextCombinationOfItems();
-
-                Card newCard = new Card();
-                newCard.getListItems().addAll(listItems);
+                Card newCard = cardSequenceGenerator.getNextCard();
                 CardValidator.validateCardUnderConstruction(newCard, listCard);
 
                 return newCard;
