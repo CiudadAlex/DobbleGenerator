@@ -9,48 +9,65 @@ import java.util.List;
 public class DobbleGenerator {
 
     private final int numItemsPerCard;
-    private int nextItem = 0;
+    private final int numCards;
+    private int nextItem = 1;
 
-    public DobbleGenerator(int numItemsPerCard) {
-        this.numItemsPerCard = numItemsPerCard;
+    /**
+     * Generates Dobble cards.
+     *
+     * p = prime number
+     * items per card = p + 1
+     * cards = p^2 + p + 1
+     * items = p^2 + p + 1
+     *
+     * Example for p = 2:
+     *
+     * 0 1 2
+     * 0 3 4
+     * 0 5 6
+     * 1 3 5
+     * 1 4 6
+     * 2 3 6
+     * 2 4 5
+     *
+     * @param primeNumber prime number
+     */
+    public DobbleGenerator(int primeNumber) {
+
+        if (!DobbleUtils.isPrimeNumber(primeNumber)) {
+            throw new IllegalArgumentException("The given number is no prime: " + primeNumber);
+        }
+
+        this.numItemsPerCard = primeNumber + 1;
+        this.numCards = primeNumber * primeNumber + primeNumber + 1;
     }
 
     public List<Card> generate() throws ValidationException {
 
         List<Card> listCard = new ArrayList<>();
-        Card card0 = new Card();
-        listCard.add(card0);
-        fillWithNewItemsAndReturnThem(card0);
 
-        while (true) {
-            Card newCard = generateNewCard(listCard);
+        for (int i = 0; i < numItemsPerCard; i++) {
 
-            if (newCard == null) {
-                break;
-            }
-
-            listCard.add(newCard);
+            Card card = new Card();
+            card.getListItems().add(0);
+            fillWithNewItemsAndReturnThem(card);
+            listCard.add(card);
         }
 
-        CardValidator.validate(listCard, numItemsPerCard);
+        Card card = generateNewCardOnlySelectItems(listCard);
+
+        while (card != null) {
+            listCard.add(card);
+            card = generateNewCardOnlySelectItems(listCard);
+        }
+
+        //CardValidator.validate(listCard, numItemsPerCard);
         return listCard;
-    }
-
-    private Card generateNewCard(List<Card> listCard) {
-
-        Card cardUnderConstruction = generateNewCardOnlySelectItems(listCard);
-
-        if (cardUnderConstruction == null) {
-            return null;
-        }
-
-        fillWithNewItemsAndReturnThem(cardUnderConstruction);
-        return cardUnderConstruction;
     }
 
     private Card generateNewCardOnlySelectItems(List<Card> listCard) {
 
-        ListCardsIndex listCardsIndex = new  ListCardsIndex(listCard, numItemsPerCard);
+        ListCardsIndex listCardsIndex = new ListCardsIndex(listCard, numItemsPerCard);
 
         while (true) {
 

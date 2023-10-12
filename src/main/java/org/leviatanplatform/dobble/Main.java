@@ -11,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) throws ValidationException {
 
-        int numItemsPerCard = 6;
-        DobbleGenerator dobbleGenerator = new DobbleGenerator(numItemsPerCard);
+        int primeNumber = 2;
+        DobbleGenerator dobbleGenerator = new DobbleGenerator(primeNumber);
 
         List<Card> listCard = dobbleGenerator.generate();
 
@@ -20,6 +20,6 @@ public class Main {
             System.out.println(card);
         }
 
-        CardValidator.validate(listCard, numItemsPerCard);
+        CardValidator.validate(listCard, primeNumber + 1);
     }
 }
