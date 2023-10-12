@@ -63,7 +63,7 @@ public class DobbleGenerator {
             card = generateNewCard(listCard);
         }
 
-        //CardValidator.validate(listCard, numItemsPerCard);
+        CardValidator.validate(listCard, numItemsPerCard);
         return listCard;
     }
 
@@ -90,17 +90,13 @@ public class DobbleGenerator {
         }
     }
 
-    private List<Integer> fillWithNewItemsAndReturnThem(Card card) {
+    private void fillWithNewItemsAndReturnThem(Card card) {
 
-        List<Integer> newItems = new ArrayList<>();
         int numItemsToAdd = numItemsPerCard - card.getListItems().size();
 
         for (int i = 0; i < numItemsToAdd; i++) {
             card.getListItems().add(nextItem);
-            newItems.add(nextItem);
             nextItem++;
         }
-
-        return newItems;
     }
 }
