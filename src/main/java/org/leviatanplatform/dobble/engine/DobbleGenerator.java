@@ -11,7 +11,6 @@ public class DobbleGenerator {
     private final int numCards;
     private final int numTotalItems;
     private final int primeNumber;
-    private int nextItem = 1;
 
     /**
      * Generates Dobble cards.
@@ -66,22 +65,21 @@ public class DobbleGenerator {
      *  2  8 14 20 21 27
      *  2  9 15 16 22 28
      *  2 10 11 17 23 29
-     *  3  6 15 19 23 27
-     *  3  7 11 20 24 28
-     *  3  8 12 16 25 29
-     *  3  9 13 17 21 30
-     *  3 10 14 18 22 26
-     *
-     *  4  6 13 20 22 29
-     *  4  6  8 10
-     *  4  5  7 12
-     *  4  6  8 10
-     *  4  6  8 10
-     *  5  5  7 12
-     *  5  6  8 10
-     *  5  5  7 12
-     *  5  6  8 10
-     *  5  6  8 10
+     *  3  6 13 20 22 29
+     *  3  7 14 16 23 30
+     *  3  8 15 17 24 26
+     *  3  9 11 18 25 27
+     *  3 10 12 19 21 28
+     *  4  6 14 17 25 28
+     *  4  7 15 18 21 29
+     *  4  8 11 19 22 30
+     *  4  9 12 20 23 26
+     *  4 10 13 16 24 27
+     *  5  6 15 19 23 27
+     *  5  7 11 20 24 28
+     *  5  8 12 16 25 29
+     *  5  9 13 17 21 30
+     *  5 10 14 18 22 26
      *
      * @param primeNumber prime number
      */
