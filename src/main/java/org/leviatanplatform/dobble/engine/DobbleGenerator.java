@@ -1,6 +1,5 @@
 package org.leviatanplatform.dobble.engine;
 
-import org.leviatanplatform.dobble.engine.exceptions.IndexFinishedException;
 import org.leviatanplatform.dobble.engine.exceptions.ValidationException;
 
 import java.util.ArrayList;
@@ -48,6 +47,42 @@ public class DobbleGenerator {
      *  3  5  7 12
      *  3  6  8 10
      *
+     *
+     * Example for p = 5:
+     *
+     *  0  1  2  3  4  5
+     *  0  6  7  8  9 10
+     *  0 11 12 13 14 15
+     *  0 16 17 18 19 20
+     *  0 21 22 23 24 25
+     *  0 26 27 28 29 30
+     *  1  6 11 16 21 26
+     *  1  7 12 17 22 27
+     *  1  8 13 18 23 28
+     *  1  9 14 19 24 29
+     *  1 10 15 20 25 30
+     *  2  6 12 18 24 30
+     *  2  7 13 19 25 26
+     *  2  8 14 20 21 27
+     *  2  9 15 16 22 28
+     *  2 10 11 17 23 29
+     *  3  6 15 19 23 27
+     *  3  7 11 20 24 28
+     *  3  8 12 16 25 29
+     *  3  9 13 17 21 30
+     *  3 10 14 18 22 26
+     *
+     *  4  6 13 20 22 29
+     *  4  6  8 10
+     *  4  5  7 12
+     *  4  6  8 10
+     *  4  6  8 10
+     *  5  5  7 12
+     *  5  6  8 10
+     *  5  5  7 12
+     *  5  6  8 10
+     *  5  6  8 10
+     *
      * @param primeNumber prime number
      */
     public DobbleGenerator(int primeNumber) {
@@ -77,48 +112,28 @@ public class DobbleGenerator {
             listRestOfItems.add(i);
         }
 
-        for (int i = 0; i < numItemsPerCard; i++) {
+        MatrixCombinator<Integer> matrixCombinator = new MatrixCombinator<>(MatrixCombinator.buildMatrixOfNumbers(primeNumber, primeNumber + 1));
+        addCards(listCard, 0, matrixCombinator.getHorizontal());
+        addCards(listCard, 1, matrixCombinator.getVertical());
 
-            int jump = i == 0 ? 1 : primeNumber + i - 1;
-            ListIterator<Integer> listIterator = new ListIterator<>(listRestOfItems, jump);
+        for (int i = 0; i < numItemsPerCard - 2; i++) {
 
-            for (int k = 0; k < primeNumber; k++) {
-
-                Card card = new Card();
-                card.getListItems().add(i);
-                listCard.add(card);
-
-                for (int m = 0; m < primeNumber; m++) {
-                    card.getListItems().add(listIterator.next());
-                }
-            }
-        }
-
-        //fullValidation(listCard);
-        return listCard;
-    }
-
-    public List<Card> generateOld() throws ValidationException {
-
-        List<Card> listCard = new ArrayList<>();
-
-        for (int i = 0; i < numItemsPerCard; i++) {
-
-            Card card = new Card();
-            card.getListItems().add(0);
-            fillWithNewItemsAndReturnThem(card);
-            listCard.add(card);
-        }
-
-        Card card = generateNewCard(listCard);
-
-        while (card != null) {
-            listCard.add(card);
-            card = generateNewCard(listCard);
+            List<List<Integer>> combinations = matrixCombinator.getDiagonal(i + 1);
+            addCards(listCard, i + 2, combinations);
         }
 
         fullValidation(listCard);
         return listCard;
+    }
+
+    private void addCards(List<Card> listCard, Integer leaderNumber, List<List<Integer>> combinations) {
+
+        for (List<Integer> combination : combinations) {
+            Card card = new Card();
+            card.getListItems().add(leaderNumber);
+            card.getListItems().addAll(combination);
+            listCard.add(card);
+        }
     }
 
     private void fullValidation(List<Card> listCard) throws ValidationException {
@@ -127,39 +142,6 @@ public class DobbleGenerator {
 
         if (numCards != listCard.size()) {
             throw new ValidationException("Not generated all possible cards");
-        }
-    }
-
-    private Card generateNewCard(List<Card> listCard) {
-
-        CardSequenceGenerator cardSequenceGenerator = new CardSequenceGenerator(numItemsPerCard, numTotalItems);
-
-        while (true) {
-
-            try {
-
-                Card newCard = cardSequenceGenerator.getNextCard();
-                CardValidator.validateCardUnderConstruction(newCard, listCard);
-
-                return newCard;
-
-            } catch (ValidationException e) {
-                // Try next combination
-
-            } catch (IndexFinishedException e) {
-                // No more cards found
-                return null;
-            }
-        }
-    }
-
-    private void fillWithNewItemsAndReturnThem(Card card) {
-
-        int numItemsToAdd = numItemsPerCard - card.getListItems().size();
-
-        for (int i = 0; i < numItemsToAdd; i++) {
-            card.getListItems().add(nextItem);
-            nextItem++;
         }
     }
 }
