@@ -13,6 +13,12 @@ public class Main {
 
         generateForPrime(2);
         generateForPrime(3);
+        generateForPrime(5);
+        generateForPrime(7);
+        generateForPrime(11);
+        generateForPrime(13);
+        generateForPrime(17);
+        generateForPrime(19);
     }
 
     public static void generateForPrime(int primeNumber) throws ValidationException {

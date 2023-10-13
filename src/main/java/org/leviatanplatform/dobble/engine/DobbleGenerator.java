@@ -105,10 +105,6 @@ public class DobbleGenerator {
         }
 
         listCard.add(card0);
-        List<Integer> listRestOfItems = new ArrayList<>();
-        for (int i = numItemsPerCard; i < numTotalItems; i++) {
-            listRestOfItems.add(i);
-        }
 
         MatrixCombinator<Integer> matrixCombinator = new MatrixCombinator<>(MatrixCombinator.buildMatrixOfNumbers(primeNumber, primeNumber + 1));
         addCards(listCard, 0, matrixCombinator.getHorizontal());
