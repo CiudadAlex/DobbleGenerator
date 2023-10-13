@@ -48,26 +48,13 @@ public class MatrixCombinator<T> {
         return result;
     }
 
-    public List<List<T>> getDiagonal1() {
+    public List<List<T>> getDiagonal(int jump) {
 
         List<List<T>> result = buildNullResult();
 
         for (int i = 0; i < dim; i++) {
             for (int k = 0; k < dim; k++) {
-                result.get(i).set(k, matrix[(k + i) % dim][k]);
-            }
-        }
-
-        return result;
-    }
-
-    public List<List<T>> getDiagonal2() {
-
-        List<List<T>> result = buildNullResult();
-
-        for (int i = 0; i < dim; i++) {
-            for (int k = 0; k < dim; k++) {
-                result.get(i).set(k, matrix[(dim - 1 - k + i) % dim][k]);
+                result.get(i).set(k, matrix[(k + i) % dim][(k * jump) % dim]);
             }
         }
 
