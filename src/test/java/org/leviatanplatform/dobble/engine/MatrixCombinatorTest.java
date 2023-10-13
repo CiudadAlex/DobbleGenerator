@@ -11,6 +11,8 @@ class MatrixCombinatorTest {
         MatrixCombinator<Integer> matrixCombinator = new MatrixCombinator<>(MatrixCombinator.buildMatrixOfNumbers(3, 4));
         System.out.println(matrixCombinator.getHorizontal());
         System.out.println(matrixCombinator.getVertical());
+        System.out.println(matrixCombinator.getDiagonal1());
+        System.out.println(matrixCombinator.getDiagonal2());
     }
 
 
