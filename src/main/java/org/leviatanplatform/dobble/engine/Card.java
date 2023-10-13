@@ -14,7 +14,27 @@ public class Card {
     }
 
     public String toString() {
-        return "" + listItems;
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Integer item : listItems) {
+            sb.append(spacedItem(item));
+        }
+
+        return sb.toString();
+    }
+
+    private String spacedItem(Integer item) {
+
+        String strItem = item.toString();
+
+        if (strItem.length() == 1) {
+            return "   " + strItem;
+        } else if (strItem.length() == 2) {
+            return "  " + strItem;
+        }
+
+        return " " + strItem;
     }
 
     public boolean hasDifferentItems() {
